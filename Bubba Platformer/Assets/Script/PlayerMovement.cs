@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     public float speed;
+    [SerializeField]
     private float Move;
 
     public float jump;
@@ -34,19 +37,19 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
- /**   private void FixedUpdate()
-    {
-        Move = Input.GetAxis("Horizontal");
+    //    private void FixedUpdate()
+    //    {
+    //        Move = Input.GetAxis("Horizontal");
+    //
+    //        #region Run
+    //        float targetSpeed = Move * speed;
+    //        float speedDif = targetSpeed - rb.velocity.x;
+    //        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f); //? acceleration : deceleration;
+    //        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower)
+    //
+    //        #endregion
+    //    }
 
-        #region Run
-        float targetSpeed = Move * speed;
-        float speedDif = targetSpeed - rb.velocity.x;
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f); //? acceleration : deceleration;
-        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower)
-
-        #endregion
-    }
-*/
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
