@@ -985,6 +985,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 7394159750204161171}
+  optionsMenu: {fileID: 7394159748914373786}
+  keybindingsMenu: {fileID: 7394159750202799826}
 --- !u!1 &7394159749485247131
 GameObject:
   m_ObjectHideFlags: 0
