@@ -14,21 +14,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, 100f)] private float _speed;
     [SerializeField, Range(0f, 100f)] private float _maxSpeed;
     [SerializeField, Range(0f, 100f)] private float _jump;
+    private float _moveX;
     
     private bool _isJumping;
     private bool _isGrounded;
     #endregion
-
+    /*
     #region Abilities
     private bool _unlockedDoubkeJumping;
     private bool _doubleJumping;
     #endregion
-
+    */
     #region Player Inputs
-    private InputAction _action;
-    private InputAction _move;
     private PlayerControls _playerControls;
-    private Rigidbody2D _rigidbody2D;
+    private InputAction _moveAction;
+    private InputAction _jumpAction;
+    private InputAction _uiActions;
+    [SerializeField] private Rigidbody2D _rigidbody2D;
     #endregion
 
     #endregion
@@ -42,50 +44,71 @@ public class PlayerController : MonoBehaviour
     {
 
         #region Player Inputs
-        Debug.Log("Moving values:" + _move.ReadValue<Vector2>());
+        //Debug.Log("Moving values:" + _move.ReadValue<Vector2>());
         #endregion
 
     }
-    private void DoMovement(InputAction.CallbackContext obj)
+
+    private void FixedUpdate()
     {
-        float moveX = _move.ReadValue<Vector2>().x;
-        _rigidbody2D.velocity = new Vector2(_speed * moveX, _rigidbody2D.velocity.y);
+        _rigidbody2D.velocity = new Vector2(_speed * _moveX, _rigidbody2D.velocity.y);
     }
 
-    private void DoJump(InputAction.CallbackContext obj)
-    {
-        Debug.Log("Jump!");
-    }
-
-    private void DoLanded(InputAction.CallbackContext obj)
-    {
-        throw new NotImplementedException();
-    }
-
-
-
+    #region Input Actions Enable/Disable
     private void OnEnable()
     {
         #region Player Inputs
-        _move = _playerControls.Player.Movement;
-        _action.Enable();
-        _move.Enable();
-        var _player = _playerControls.Player;
+        _moveAction = _playerControls.Player.Movement;  //Assigns 
+        _moveAction.Enable();                           //
+        _jumpAction = _playerControls.Player.Jump;      //
+        _jumpAction.Enable();                           //
+        _uiActions = _playerControls.UI.Menu;
+        _uiActions.Enable();
 
-        _player.Movement.Enable();                   //Enables movement action from side to side - Vector2
-        _player.Movement.performed += DoMovement;    //Moves from side to side
 
-        _player.Jump.Enable();                       //Enables jumping action from side to side - Double
-        _player.Jump.performed += DoJump;            //Does a jump
-        _player.Jump.canceled += DoLanded;           //Lands from a jump
+        _moveAction.performed += DoMovement;            //Moves from side to side
+        _moveAction.Enable();                           //Enables movement action from side to side - Vector2
+
+        _jumpAction.performed += DoJump;                //Does a jump
+        _jumpAction.Enable();                           //Enables jumping action from side to side - Double
         #endregion
     }
 
     private void OnDisable()
     {
-        _action.Disable();
-        _move.Disable();
-        _playerControls.Disable();
+        _moveAction.Disable();                          //
+        _jumpAction.Disable();                          //
+        _playerControls.Disable();                      //
+        _uiActions.Disable();
     }
+    #endregion
+
+
+    private void DoMovement(InputAction.CallbackContext obj)
+    {
+        /*
+        float moveX = _moveAction.ReadValue<Vector2>().x;
+        _rigidbody2D.velocity = new Vector2(_speed * moveX, _rigidbody2D.velocity.y);
+        */
+        _moveX = obj.ReadValue<Vector2>().x;
+
+    }
+
+    private void DoJump(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Jump!");
+        _isJumping = true;
+        _isGrounded = false;
+
+        //oundCheck();
+
+        //(obj.performed && _isGrounded
+
+    }
+
+    private void GroundCheck()
+    {
+       
+    }   
 
 }
